@@ -1,10 +1,10 @@
 package com.Logger.services;
 
 import com.Logger.domain.model.Inventory;
-import com.Logger.domain.model.Response;
+import com.Logger.domain.model.CMResponse;
 import com.Logger.domain.repository.InventoryImpl;
 import com.Logger.domain.repository.InventoryRepository;
-import com.Logger.domain.repository.ResponseRepository;
+import com.Logger.domain.repository.CMResponseRepository;
 import com.Logger.utils.ParserUtility;
 import com.Logger.utils.Response.InventoryResponse;
 import com.Logger.utils.RoomAvailabilityRequest;
@@ -28,7 +28,7 @@ public class InventoryServices {
     ParserUtility parserUtility;
 
     @Autowired
-    ResponseRepository responseRepository;
+    CMResponseRepository cmResponseRepository;
 
     public List<Inventory> getInventoryInfo() {
         return inventoryRepository.findAll();
@@ -51,20 +51,20 @@ public class InventoryServices {
         return inventoryImpl.findForInventory(availabilityRequest);
     }
 
-    public String saveResponse(Response response) throws MongoException {
-        Response responseResult;
+    public String saveResponse(CMResponse CMResponse) throws MongoException {
+        CMResponse CMResponseResult;
         try {
-            responseResult = responseRepository.save(response);
+            CMResponseResult = cmResponseRepository.save(CMResponse);
         }
         catch (Exception mongoProblem) {
             throw new MongoException(mongoProblem.getMessage(), mongoProblem);
         }
-        return responseResult == null ? "Cannot Save Empty Arguments" : "Saved successfully";
+        return CMResponseResult == null ? "Cannot Save Empty Arguments" : "Saved successfully";
     }
 
-    public List<Response> getResponse()
+    public List<CMResponse> getResponse()
     {
-        return responseRepository.findAll();
+        return cmResponseRepository.findAll();
     }
     }
 

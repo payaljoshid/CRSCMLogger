@@ -1,23 +1,17 @@
 package com.Logger.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
-import java.util.List;
 
-@Document(collection = "CRSCMPrice")
-@Data
-public class Price {
+@Document(collection = "CMResponse")
+public class CMResponse {
     @Id
-    public String _id;
+    String id;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd@HH:mm:ss.SSSZ",timezone="GMT+5:30")
-    public Date createdDate;
-    public Long userId;
-    public String userName;
+    public Date createdDate=new Date();
     public Long uniqueId;
-    public List<Hotels> hotels;
-
+    public String status;
 }

@@ -59,6 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");
             res.setHeader("Access-Control-Max-Age", "3600");
             res.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type, Accept, Access-Control-Allow-Methods, X-Requested-With, Cache-Control");
+            res.setHeader("Access-Control-Expose-Headers", "Authorization, Content-Type, Accept, Access-Control-Allow-Methods, X-Requested-With, Cache-Control");
             chain.doFilter(request, res);
         }
         @Override
@@ -78,6 +79,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // setAllowedHeaders is important! Without it, OPTIONS preflight request
         // will fail with 403 Invalid CORS request
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+        configuration.setExposedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
         configuration.setMaxAge(1800L);
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

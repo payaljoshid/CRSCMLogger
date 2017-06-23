@@ -1,7 +1,7 @@
 package com.Logger.controllers;
 
 import com.Logger.domain.model.Inventory;
-import com.Logger.domain.model.Response;
+import com.Logger.domain.model.CMResponse;
 import com.Logger.services.InventoryServices;
 import com.Logger.utils.Response.InventoryResponse;
 import com.Logger.utils.RoomAvailabilityRequest;
@@ -38,12 +38,12 @@ public class InventoryController {
             }
 
             @RequestMapping(value = "/crs/response/status", method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE)
-            public String saveResponse(@RequestBody Response response) {
-                return inventoryServices.saveResponse(response);
+            public String saveResponse(@RequestBody CMResponse CMResponse) {
+                return inventoryServices.saveResponse(CMResponse);
             }
 
             @RequestMapping(value = "/crs/response/status", method = RequestMethod.GET)
-            public List<Response> getResponse() {
+            public List<CMResponse> getResponse() {
                 return inventoryServices.getResponse();
             }
 }

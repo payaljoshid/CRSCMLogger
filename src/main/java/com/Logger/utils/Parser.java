@@ -9,7 +9,7 @@ import java.util.Date;
 @Component
 public class Parser
 {
-   static final Long EMPTY_LONG=0L;
+    static final Long EMPTY_LONG=0L;
     static final String EMPTY_STRING="";
     static final int EMPTY_INT=0;
 

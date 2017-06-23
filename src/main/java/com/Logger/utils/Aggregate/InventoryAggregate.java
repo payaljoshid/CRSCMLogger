@@ -18,7 +18,7 @@ public class InventoryAggregate {
                         .and("hotels.hotelId").as("hotelId").and("hotels.rooms.roomId").as("roomId")
                         .and("hotels.rooms.availability.free").as("occupancy")
                         .and("hotels.rooms.availability.date").as("date"),
-                lookup("response", "uniqueId", "uniqueId", "responseField"),
+                lookup("CMResponse", "uniqueId", "uniqueId", "responseField"),
                 unwind("responseField",true),
                 project("uniqueId","type","createdDate","reservationId","revisionId","hotelId","roomId","occupancy","date")
                         .and("responseField.status").applyCondition(ConditionalOperators.ifNull("responseField.status").then("N/A"))

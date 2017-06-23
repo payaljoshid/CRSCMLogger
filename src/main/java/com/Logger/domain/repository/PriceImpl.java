@@ -33,7 +33,7 @@ public class PriceImpl {
         CriteriaChecking.getPriceCriteria(criteriaList,availabilityRequest);
         criteria = criteria.andOperator(criteriaList.toArray(new Criteria[criteriaList.size()]));
         agg = PriceAggregate.aggregatePriceAndResponse(criteria);
-        results = mongoTemplate.aggregate(agg, "price", PriceResponse.class);
+        results = mongoTemplate.aggregate(agg, "CRSCMPrice", PriceResponse.class);
         result= results.getMappedResults();
         return result;
     }

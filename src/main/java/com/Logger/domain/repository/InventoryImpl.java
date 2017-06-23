@@ -33,7 +33,7 @@ public class InventoryImpl {
         CriteriaChecking.getInventoryCriteria(criteriaList,availabilityRequest);
         criteria = criteria.andOperator(criteriaList.toArray(new Criteria[criteriaList.size()]));
         agg= InventoryAggregate.aggregateInventoryAndResponse(criteria);
-        results = mongoTemplate.aggregate(agg, "inventory", InventoryResponse.class);
+        results = mongoTemplate.aggregate(agg, "CRSCMInventory", InventoryResponse.class);
         result= results.getMappedResults();
         return result;
     }

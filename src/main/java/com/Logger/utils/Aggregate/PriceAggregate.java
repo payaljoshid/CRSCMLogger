@@ -21,7 +21,7 @@ public class PriceAggregate {
                         .and("hotels.rooms.rateplans.rateplanId").as("rateplanId")
                         .and("hotels.rooms.rateplans.priceDetails.price").as("price")
                         .and("hotels.rooms.rateplans.priceDetails.date").as("date"),
-                lookup("response","uniqueId","uniqueId", "responseField"),
+                lookup("CMResponse","uniqueId","uniqueId", "responseField"),
                 unwind("responseField",true),
                 project("uniqueId", "userName", "createdDate", "userId", "rateplanId", "hotelId", "roomId", "price", "date")
                         .and("responseField.status").applyCondition(ConditionalOperators.ifNull("responseField.status").then("N/A"))

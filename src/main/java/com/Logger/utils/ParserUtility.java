@@ -1,39 +1,30 @@
 package com.Logger.utils;
 
 import com.Logger.domain.model.*;
-import com.Logger.domain.repository.UserRepository;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.mongodb.BasicDBObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by technology on 19/4/17.
- */
 @Service
 public class ParserUtility {
     @Autowired
     Parser parser;
-
     @Autowired
-    UserRepository userRepository;
+    URLIdentification urlIdentification;
 
     List<Inventory> inventoryList;
-
     List<Price> priceList;
-
-    List<UserInfo> userInfoList;
-
     public List<Inventory> createInventoryObjectNode(List<ObjectNode> inventoryNode) {
         inventoryList = new LinkedList<>();
-
         for (ObjectNode node : inventoryNode) {
             Inventory inventory = new Inventory();
-
             inventory.createdDate = parser.getCurrentDate();
             inventory.uniqueId = parser.getLong("uniqueId", node);
             inventory.reservationId = parser.getLong("reservationId", node);
@@ -105,7 +96,6 @@ public class ParserUtility {
                             PriceDetails priceDetail = new PriceDetails();
                             priceDetail.date = parser.getDate("date", priceDetailNode);
 
-                            // List<Prices> prices=new LinkedList<>();
                             JsonNode pricesNode = priceDetailNode.get("price");
                             Prices pricesObject = new Prices();
                             pricesObject.triple = pricesNode.get("Triple").decimalValue();
@@ -134,24 +124,56 @@ public class ParserUtility {
         }
         return priceList;
     }
-}
-  /*  public List<UserInfo> createUserInfoNode(ObjectNode userNode) throws MongoException{
-        userInfoList=new LinkedList<>();
-        UserInfo userInfo=new UserInfo();
-        try {
-            UserInfo userInfoExists = userRepository.findByUserName(userNode.get("userName").asText());
-            if (userInfoExists == null) {
-                userInfo.userName = parser.getString("userName", userNode);
-                userInfo.password = parser.getString("password", userNode);
-                userInfo.firstName = parser.getString("firstName", userNode);
-                userInfo.lastName = parser.getString("lastName", userNode);
-                userInfo.emailId = parser.getString("emailId", userNode);
-                userInfoList.add(userInfo);
+
+    public String createRequestDataNode(List<ObjectNode> requestDataNode) throws Exception {
+        String results;
+        String result=null;
+            for (ObjectNode node : requestDataNode) {
+                Integer requestId = parser.getInt("requestId", node);
+                String url = parser.getString("url", node);
+                ObjectMapper mapper = new ObjectMapper();
+                BasicDBObject requestBody = mapper.convertValue(node.get("requestBody"), BasicDBObject.class);
+                Integer chainId = parser.getInt("chainId", node);
+                Integer propertyId = parser.getInt("propertyId", node);
+                results=urlIdentification.checkForUrl(url);
+                result=urlIdentification.saveByUrl(requestId, url, requestBody, chainId, propertyId, results);
             }
-        }catch(Exception mongoProblem)
-        {
-            throw new MongoException(mongoProblem.getMessage(),mongoProblem);
-        }
-        return userInfoList;
+    return result;
     }
-}*/
+
+    public String createResponseDataNode(List<ObjectNode> responseDataNode) {
+        String results;
+        String result=null;
+        for (ObjectNode node : responseDataNode) {
+            Integer requestId = parser.getInt("requestId", node);
+            String url = parser.getString("url", node);
+            ObjectMapper mapper = new ObjectMapper();
+            BasicDBObject responseBody = mapper.convertValue(node.get("responseBody"), BasicDBObject.class);
+            results=urlIdentification.checkForUrl(url);
+            result=urlIdentification.updateByRequestId(requestId, url, responseBody, results);
+        }
+        return result;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

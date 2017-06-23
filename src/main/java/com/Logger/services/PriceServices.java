@@ -13,9 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * Created by technology on 11/4/17.
- */
 @Service
 public class PriceServices {
 
@@ -28,7 +25,7 @@ public class PriceServices {
     @Autowired
     ParserUtility parserUtility;
 
-    public String savePrice(List<ObjectNode> node) {
+    public String savePrice(List<ObjectNode> node) throws MongoException {
         List<Price> priceResult;
         try {
             List<Price> priceList = parserUtility.createPriceObjectNode(node);
@@ -45,15 +42,8 @@ public class PriceServices {
        return priceRepository.findAll();
     }
 
-
-
     public List<PriceResponse> findForPrice(RoomAvailabilityRequest availabilityRequest)
     {
     return priceImpl.findForPrice(availabilityRequest);
-    }
-
-    public String saveprices(List<Price> price) {
-        priceRepository.save(price);
-        return "Saved Successfully";
     }
 }

@@ -50,15 +50,15 @@ public class CriteriaChecking {
     }
 
     public static void checkForHotelIdOrRoomIdOrRateplanId(List<Criteria> criteriaList, RoomAvailabilityRequest request) {
-        if((request.hotelId != null && request.hotelId != 0) && (request.roomId != null && request.roomId != 0) && (request.rateplanId!=null && request.rateplanId!=0))
+        if(request.hotelId != null  && request.roomId != null && request.rateplanId!=null)
         {
             criteriaList.add(Criteria.where("hotels.hotelId").is(request.hotelId).and("hotels.rooms.roomId").is(request.roomId).and("hotels.rooms.rateplans.rateplanId").is(request.rateplanId));
         }
-        else if((request.hotelId != null && request.hotelId != 0) && (request.roomId != null && request.roomId != 0))
+        else if(request.hotelId != null && request.roomId != null )
         {
             criteriaList.add(Criteria.where("hotels.hotelId").is(request.hotelId).and("hotels.rooms.roomId").is(request.roomId));
         }
-        else if(request.hotelId != null && request.hotelId != 0) {
+        else if(request.hotelId != null) {
             criteriaList.add(Criteria.where("hotels.hotelId").is(request.hotelId));
         }
     }
